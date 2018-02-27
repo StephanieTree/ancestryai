@@ -1,10 +1,10 @@
 import cPickle as pickle
 import time
 
-print "Loading the graph..."
+print "_NOT_ Loading the graph..."
 t0 = time.time()
-nodes = pickle.load(open('main/family_tree_inference/plain_graph3.pckl', 'rb'))
-print "Loaded in {:.2f} seconds.".format(time.time() - t0)
+#nodes = pickle.load(open('main/family_tree_inference/plain_graph3.pckl', 'rb'))
+#print "Loaded in {:.2f} seconds.".format(time.time() - t0)
 
 def search_path(xref1, xref2):
     try:

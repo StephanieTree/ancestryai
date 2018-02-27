@@ -61,7 +61,7 @@
                             <dt translate>Date of baptism</dt>
                                 <dd>{{ menu.Hiski.selected.data.birth_date_string || "--" }}</dd>
                             <dt translate>Parish</dt>
-                                <dd>{{ menu.Hiski.selected.data.location.name || "--" }}</dd>
+                                <dd>{{ menu.Hiski.selected.data.location.parish_name || "--" }}</dd>
                             <dt translate>Father name</dt>
                                 <dd>{{ menu.Hiski.selected.data.dad_first || "--" }} {{ menu.Hiski.selected.data.dad_patronym || ""}}
                                     {{ menu.Hiski.selected.data.dad_family || ""}}
@@ -101,7 +101,7 @@
                                             {{ menu.Hiski.selected.data.birth_date_string || "--" }}
                                         </td>
                                         <td>
-                                            {{ menu.Hiski.selected.data.location.name || "--" }}
+                                            {{ menu.Hiski.selected.data.location.parish_name || "--" }}
                                         </td>
                                         <td>
                                             {{ menu.Hiski.selected.data.dad_first || "--" }}
@@ -261,7 +261,7 @@
                                     <input ng-if="triplet.search_type != 'parish'" type="text" ng-model="triplet.search_term"></input>
                                     <select ng-if="triplet.search_type == 'parish'" ng-model="triplet.search_term">
                                         <option ng-repeat="parish in menu.Hiski.parishes" value="{{parish.id}}">
-                                            {{ parish.parish_name || parish.id }}
+                                            {{ parish.name || parish.id }}
                                         </option>
                                     </select>
                                 </div>
@@ -298,7 +298,7 @@
                                             {{ ind.birth_date_string }}
                                         </td>
                                         <td>
-                                            {{ ind.location.name }}
+                                            {{ ind.location.parish_name }}
                                         </td>
                                         <td>
                                             <a class="external" target="_blank" ng-href="http://hiski.genealogia.fi/hiski?{{ menu.Hiski.external_hiski_language }}+t{{ ind.xref }}">

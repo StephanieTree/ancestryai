@@ -24,6 +24,7 @@ commands
                           a header file. After <fname> you may additionally
                           provide <batch_idx> <num_batches>.
         components      - populate connected components for people path search
+        deaths          - populate birth-burial links
     write             - write gedcom out from the database
         reform          - reform the gedcom data in database
         gedcom <fname>  - write the gedcom data to the given file
@@ -72,7 +73,7 @@ if command == "db":
         print "* database exported"
 if command == "populate":
     import main
-    from main.populate import populate_from_gedcom, populate_from_recons, populate_component_ids
+    from main.populate import populate_from_gedcom, populate_from_recons, populate_component_ids, update_deaths, reset_deaths
     for i,sub in enumerate(subs):
         if sub == "gedcom":
             fname = subs[i+1]
@@ -87,6 +88,9 @@ if command == "populate":
             populate_from_recons(fname, batch_idx, num_batches)
         if sub == "components":
             populate_component_ids()
+        if sub == "deaths":
+            reset_deaths()
+            update_deaths()
 if command == "pre_dict":
     import main
     from main.populate import pre_dict

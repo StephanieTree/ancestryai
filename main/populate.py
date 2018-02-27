@@ -152,7 +152,8 @@ def yield_data_dicts(path, batch_idx=None, num_batches=None):
 def to_dict(**kwargs):
     return kwargs
 
-def populate_from_recons(fname, batch_idx=None, num_batches=None):
+def populate_from_recons(fname, batch_idx=None, num_batches=None,
+                         do_pre_dict=True):
     t = Timer(True, 48)
     base = os.path.dirname(fname)
     f = open(fname)
@@ -221,8 +222,10 @@ def populate_from_recons(fname, batch_idx=None, num_batches=None):
                     is_celebrity = d["hiski_id"] in celebrities or d.get("is_celebrity", False),
                     birth_date_string = u"{}.{}.{}".format(d["day"], d["month"], d["year"]),
                     birth_date_year = d["year"],
-                    death_date_string = None,
-                    death_date_year = None,
+                    # todo: create a new column for burial id (now we're 
+                    # using this string field which is otherwise unused)
+                    death_date_string = d["burial_id"],
+                    death_date_year = d["death_year"],
                     # todo: revise soundex storing to be more sensible
                     soundex_first = u(soundex.soundex(u(d["first_name"]).upper())),
                     soundex_family = u(soundex.soundex(u(d["last_name"]).upper())),
@@ -348,9 +351,10 @@ def populate_from_recons(fname, batch_idx=None, num_batches=None):
         t.submeasure("families linked to individuals")
         count_families = i
     t.measure("{} families added".format(count_families))
-    # Pre-compute dict representations for individuals and families.
-    pre_dict()
-    t.measure("pre-dicted individuals and families")
+    if do_pre_dict:
+        # Pre-compute dict representations for individuals and families.
+        pre_dict()
+        t.measure("pre-dicted individuals and families")
     session.commit()
     t.measure("commit")
     t.print_total()
@@ -451,7 +455,102 @@ def pre_dict():
             engine.execute(stmt, pre_dicts)
             pre_dicts = []
 
+def update_deaths():
+    from sqlalchemy.sql.expression import bindparam
+
+    batch_size = 3000
+    stmt = Individual.__table__.update().\
+        where(Individual.id == bindparam('_id')).\
+        values({
+            'death_date_year': bindparam('death_date_year'),
+            'death_date_string': bindparam('death_date_string'),
+            'pre_dicted': bindparam('pre_dicted'),
+        })
+    updates = []
+    f = open('recons_data/all_birth_burial_links.tsv')
+    for i, line in enumerate(f):
+        if i % 1000 == 0:
+            print dt.datetime.now().isoformat()[:-7], i
+        birth_id, burial_id, year = line.rstrip('\n').split('\t')
+        year = int(year)
+        birth_id = int(birth_id)
+        burial_id = int(burial_id)
+        ind = Individual.query.filter_by(xref = birth_id).first()
+        pre_dict = json.loads(ind.pre_dicted)
+        pre_dict['death_date_year'] = year
+        pre_dict['death_date_string'] = burial_id
+        updates.append({'_id': ind.id,
+                        'death_date_year': year,
+                        'death_date_string': burial_id,
+                        'pre_dicted': u(json.dumps(pre_dict)),
+                        })
+        #pre_dict['death_date_year'] = None
+        #pre_dict['death_date_string'] = None
+        #updates.append({'_id': birth_id,
+        #                'death_date_year': None,
+        #                'death_date_string': None,
+        #                'pre_dicted': u(json.dumps(pre_dict)),
+        #                })
+        if len(updates) > batch_size:
+            t0 = time.time()
+            engine.execute(stmt, updates)
+            updates = []
+            print "  Executing took {:.4f} seconds.".format(time.time()-t0)
+            sys.stdout.flush()
+    if len(updates) > 0:
+        engine.execute(stmt, updates)
+    session.commit()
+
+def reset_deaths():
+    from sqlalchemy.sql.expression import bindparam
+
+    reset_batch = 10000
+    n_inds = session.query(Individual).count()
+    print "Resetting deaths for {} individuals.".format(n_inds)
+    stmt = Individual.__table__.update().\
+        where(Individual.id == bindparam('_id')).\
+        values({
+            'death_date_year': bindparam('death_date_year'),
+            'death_date_string': bindparam('death_date_string'),
+            'pre_dicted': bindparam('pre_dicted'),
+        })
+    updates = []
+    for batch_i, (lo, hi) in enumerate(yield_batch_limits(n_inds, reset_batch)):
+        #if lo < 2100001:
+        #    continue
+        print dt.datetime.now().isoformat()[:-7], "Batch from {} to {}".format(lo, hi-1)
+        sys.stdout.flush()
+        t0 = time.time()
+        inds = Individual.query.filter(and_(Individual.id >= lo, Individual.id < hi)).all()
+        print "  Querying {} individuals took {:.4f} seconds.".format(len(inds), time.time()-t0)
+        sys.stdout.flush()
+        t0 = time.time()
+        for ii, ind in enumerate(inds):
+            if ind.death_date_year is None:
+                continue
+            try:
+                pre_dict = json.loads(ind.pre_dicted)
+            except:
+                print ind.id, ind.xref
+                print "PD:", ind.pre_dicted
+            pre_dict['death_date_year'] = None
+            pre_dict['death_date_string'] = None
+            updates.append({'_id': ind.id,
+                            'death_date_year': None,
+                            'death_date_string': None,
+                            'pre_dicted': u(json.dumps(pre_dict)),
+                            })
+        print "  Pre-dicting took {:.4f} seconds.".format(time.time()-t0)
+        if len(updates) > 0:
+            t0 = time.time()
+            engine.execute(stmt, updates)
+            updates = []
+            print "  Executing took {:.4f} seconds.".format(time.time()-t0)
+            sys.stdout.flush()
+
 def populate_component_ids():
+    # NB: This is very slow and shouldn't be used for the full dataset!
+
     t = Timer(True, 60)
     # I'm not sure why the joinedload caused an exception, seemed like limit of
     # how much sqlite or sqlalchemy can retrieve from a query.
