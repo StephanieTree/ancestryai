@@ -160,6 +160,12 @@ def json_load_comments(xref):
 
 @app.route("/json/people-path-slow/<xref1>/<xref2>/")
 def json_people_path_slow(xref1, xref2):
+    return jsonify({
+        "result": False,
+        "message": "Path search is currently not supported.",
+    })
+
+    # NB: The following code is currently obsolete.
     t = Timer(True, 40)
     ind1 = Individual.query.filter_by(xref = xref1).first()
     ind2 = Individual.query.filter_by(xref = xref2).first()
@@ -255,6 +261,12 @@ def json_people_path_slow(xref1, xref2):
 
 @app.route("/json/people-path/<xref1>/<xref2>/")
 def json_people_path(xref1, xref2):
+    return jsonify({
+        "result": False,
+        "message": "Path search is currently not supported.",
+    })
+
+    # NB: The following code is currently obsolete.
     t = Timer(True, 40)
     ind1 = Individual.query.filter_by(xref = xref1).first()
     ind2 = Individual.query.filter_by(xref = xref2).first()

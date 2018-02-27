@@ -40,6 +40,7 @@ translations.fi = {
 
     "Comments": "Kommentteja",
     "Select a node": "Valitse noodi",
+    "Select a person from the tree view.": "Valitse henkilö puunäkymästä.",
     "Hide": "Piilota",
     "Comments about data quality": "Kommentteja datan laadusta",
     "Name:": "Nimi:",
@@ -73,6 +74,7 @@ translations.fi = {
     "Hide others": "Piilota muut",
     "Add search criterion": "Lisää hakuehto",
     "Birth year": "Syntymävuosi",
+    "Death year": "Kuolinvuosi",
     "remove": "poista",
     "self": "Haettava henkilö",
     "Search criterion": "Hakuehto",
