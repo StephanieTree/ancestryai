@@ -91,7 +91,10 @@
             </ul>
             <div class="explanation">
                 <div class="lang en" ng-if="menu.language == 'en'">
-                    <p>AncestryAI is an application which uses machine learning to infer family trees and enables visualizing and searching the inferred trees. It has been developed to support genealogical research.</p>
+                    <p>AncestryAI is an application which uses machine learning to infer family trees and enables visualizing and searching the inferred trees. It has been developed to support genealogical research and to provide material for studies in computational social science, demography, and other disciplines.</p>
+
+                    <h2>News</h2>
+                    <p><b>(2018-02-28)</b> A new version of AncestryAI with several improvements has been released.</p>
 
                     <h2>Technical requirements</h2>
                     <p>Only Chrome and Firefox browsers are currently supported.</p>
@@ -117,7 +120,7 @@
                     <p>The source code is available on <a href=https://github.com/ekQ/ancestryai>GitHub</a> under the MIT Licence. Contributions are welcome.</p>
 
                     <h2>Algorithm</h2>
-                    <p>The family links are inferred based on the names, birth dates, and birth locations of the individuals using a probabilistic machine-learning approach. For more information, see our paper <a href=https://users.aalto.fi/~emalmi/ancestryai_www.pdf>AncestryAI: A Tool for Exploring Computationally Inferred Family Trees</a>.</p>
+                    <p>The family links are inferred based on the names, birth dates, and birth locations of the individuals using a probabilistic machine-learning approach. For more information, see our papers <a href=https://arxiv.org/abs/1802.06055>Computationally Inferred Genealogical Networks Uncover Long-Term Trends in Assortative Mating</a> and <a href=https://users.aalto.fi/~emalmi/ancestryai_www.pdf>AncestryAI: A Tool for Exploring Computationally Inferred Family Trees</a>.</p>
 
                     <h2>Creators</h2>
                     <p>AncestryAI is maintained by <a href=https://users.ics.aalto.fi/emalmi/>Eric Malmi</a>, who is developing collective entity resolution methods for genealogical data in his PhD project. The web application has been originally implemented by Marko Rasa.</p>
@@ -125,7 +128,18 @@
                     <p>All feedback is welcome at: eric.malmi@aalto.fi</p>
                 </div>
                 <div class="lang fi" ng-if="menu.language == 'fi'">
-                    <p>AncestryAI on tekoälysovellus, joka muodostaa automaattisesti sukupuita ja mahdollistaa niiden visualisoinnin sekä hakemisen. Sovellus on kehitetty tukemaan sukututkijoiden tekemää työtä.</p>
+                    <p>AncestryAI on tekoälysovellus, joka muodostaa automaattisesti sukupuita ja mahdollistaa niiden visualisoinnin sekä hakemisen. Sovellus on kehitetty tukemaan sukututkijoiden tekemää työtä sekä tuottamaan aineistoa laskennallisten yhteiskuntatieteiden, väestötieteen ym. tieteenalojen tutkimukseen.</p>
+
+                    <h2>Uutta</h2>
+                    <p><b>(2018-02-28)</b> Uusi versio AncestryAI:sta on julkaistu! Mukana seuraavat päivitykset:
+                    <ol>
+                      <li>Edistyneempi linkitysalgoritmi, joka päättelee 65.1% sukunimellisistä vanhemmista oikein (kts. lisää <a href=https://arxiv.org/abs/1802.06055>tästä artikkelista</a>)</li>
+                      <li>Sukunimettömien henkilöiden linkitys patronyymien perusteella (näiden linkkien tarkkuutta ei ole testattu)</li>
+                      <li>Hautaustapahtumien linkitys 12 %:iin kastetapahtumista (päätelty <it>Kuolinvuosi</it> näkyy Tietoa-näkymässä)</li>
+                      <li>Pieniä käyttöliittymäparannuksia</li>
+                      <li>Polkuhaku kahden henkilön välillä poistettu toistaiseksi käytöstä tehokkuussyistä (mikäli kaipaat tätä ominaisuutta takaisin, kerro siitä meille)</li>
+                    </ol>
+                    </p>
 
                     <h2>Tekniset vaatimukset</h2>
                     <p>Tuettuja selaimia ovat Chrome ja Firefox. Internet Explorer -selaimella näkymät saattavat mennä toistensa päälle.</p>
@@ -159,10 +173,12 @@
 
                     <p>Kommentit näkyvät myös muille käyttäjille, jotka valitsevat kyseisen henkilön. Nimi- ja email-kenttien täyttäminen on vapaaehtoista, ja sähköpostiosoite ei näy muille käyttäjille, vaan ainoastaan ohjelman ylläpitäjällä, joka voi tarvittaessa pyytää lisätietoja kommenttiin liittyen.</p>
 
+                    <!--
                     <h3>Polkuhaku</h3>
                     <p>Etsii lyhimmän polun kahden henkilön välille auttaen löytämään sukulaisuussuhteita. Lähtöhenkilö valitaan klikkaamalla jotakuta Puu-näkymässä, ja kohdehenkilön voi valita esim. ohjelman listaamien tunnettujen suomalaisten joukosta tai syöttämällä jonkun toisen henkilön HisKi ID:n.</p>
 
                     <p>Huom! Polun ollessa pitkä epävarmuudet kasaantuvat, eikä polku näin ollen todennäköisesti pidä paikkaansa kokonaisuudessaan.</p>
+                    -->
 
                     <h3>Kartta</h3>
                     <p>Esittää Puu-näkymän henkilöt kartalla värittäen valitun henkilön valkoisella. Kartalle näytetään lisäksi linkit valitun henkilön vanhempiin ja lapsiin (elleivät he ole syntyneet samassa paikassa). Seurakuntien ja kylien koordinaatit on päätelty <a href=http://users.ics.aalto.fi/gionis/geolocation.pdf>tässä</a> tutkimusartikkelissa kuvatulla menetelmällä perustuen Maanmittauslaitoksen aineistoon.</p>
@@ -179,7 +195,7 @@
                     <p>Sovelluksen lähdekoodi on saatavilla <a href=https://github.com/ekQ/ancestryai>GitHubissa</a>. Ulkopuolisia kontribuutioita otetaan mielellään vastaan - erityisesti liittyen käyttöliittymän parannuksiin.</p>
 
                     <h2>Algoritmi</h2>
-                    <p>Ohjelma päättelee sukulaisuussuhteita perustuen henkilöiden nimiin sekä ikä- ja paikkatietoihin hyödyntäen tilastollista koneoppimista. Tarkempaa tietoa algoritmin toiminnasta löytyy artikkelista <a href=https://users.aalto.fi/~emalmi/ancestryai_www.pdf>AncestryAI: A Tool for Exploring Computationally Inferred Family Trees</a>.</p>
+                    <p>Ohjelma päättelee sukulaisuussuhteita perustuen henkilöiden nimiin sekä ikä- ja paikkatietoihin hyödyntäen tilastollista koneoppimista. Tarkempaa tietoa algoritmin toiminnasta löytyy artikkeleista <a href=https://arxiv.org/abs/1802.06055>Computationally Inferred Genealogical Networks Uncover Long-Term Trends in Assortative Mating</a> sekä <a href=https://users.aalto.fi/~emalmi/ancestryai_www.pdf>AncestryAI: A Tool for Exploring Computationally Inferred Family Trees</a>.</p>
 
                     <h2>Tekijät</h2>
                     <p>Tällä hetkellä AncestryAI:n ainoana kehittäjänä toimii <a href=https://users.ics.aalto.fi/emalmi/>Eric Malmi</a>, jonka väitöskirjatutkimus käsittelee mm. sukupuiden päättelyä tiedonlouhinnan ja koneoppimisen keinoin. Web-sovelluksen on toteuttanut alunperin Marko Rasa.</p>

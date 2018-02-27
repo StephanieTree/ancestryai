@@ -53,7 +53,7 @@ function find_link_type(node, relation) {
     if(_.indexOf(relation.data.parents, node.xref) != -1) {
         return "parent";
     }
-    throw new Error("No node '"+obj.xref+"' in relation '"+relation.xref+"'");
+    throw new Error("No node '"+node.xref+"' in relation '"+relation.xref+"'");
 }
 
 function create_link_id(relation, node) {
