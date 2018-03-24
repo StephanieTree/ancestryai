@@ -1,8 +1,8 @@
 import cPickle as pickle
 import time
 
-print "_NOT_ Loading the graph..."
-t0 = time.time()
+#print "_NOT_ Loading the graph..."
+#t0 = time.time()
 #nodes = pickle.load(open('main/family_tree_inference/plain_graph3.pckl', 'rb'))
 #print "Loaded in {:.2f} seconds.".format(time.time() - t0)
 
